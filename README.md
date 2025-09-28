@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rick and Morty Visualizer
 
-## Getting Started
+A modern, responsive web application for exploring Rick and Morty characters with advanced filtering, favorites management, and multiple view modes.
 
-First, run the development server:
+## ✨ Features
+
+- **Character Browsing**: Browse all Rick and Morty characters with pagination or infinite scroll
+- **Advanced Filtering**: Filter by name, status, and sort alphabetically
+- **Multiple View Modes**: Switch between grid and table views
+- **Favorites System**: Save and manage your favorite characters
+- **Dark/Light Theme**: Toggle between dark and light themes
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Bulk Actions**: Select multiple characters and add them to favorites at once
+
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org) with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **State Management**: React Context API
+- **Testing**: Vitest + React Testing Library
+- **Code Quality**: ESLint + Prettier
+- **Package Manager**: pnpm
+- **Deployment**: Vercel
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone git@github.com:antoniojh10/rick-and-morty-visualizer.git
+   cd rick-and-morty-visualizer
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Start the development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🛠️ Development Workflow
+
+### Available Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Development
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm start            # Start production server
+
+# Code Quality
+pnpm lint             # Run ESLint
+pnpm lint:fix         # Fix ESLint errors automatically
+pnpm format           # Format code with Prettier
+pnpm format:check     # Check if code is formatted
+pnpm type-check       # Run TypeScript type checking
+
+# Testing
+pnpm test             # Run all tests
+pnpm test:watch       # Run tests in watch mode
+
+# All Checks
+pnpm check-all        # Run lint + format + type-check + tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Pre-commit Hooks
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project uses Husky and lint-staged to automatically:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Lint and fix code issues
+- Format code with Prettier
+- Run type checking
 
-## Learn More
+### Code Organization
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # Next.js App Router pages
+├── components/             # Reusable UI components
+│   ├── characters/         # Character-specific components
+│   └── layout/            # Layout components
+├── context/               # React Context providers
+├── hooks/                 # Custom React hooks
+├── services/              # API services
+├── styles/                # Global styles and themes
+├── types/                 # TypeScript type definitions
+└── test/                  # Test utilities and setup
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧪 Testing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The project includes comprehensive test coverage:
 
-## Deploy on Vercel
+- **Unit Tests**: Component and hook testing
+- **Integration Tests**: Context and service testing
+- **Test Utilities**: Custom render functions with providers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Run tests with:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm test           # Run once
+pnpm test:watch     # Watch mode for development
+```
+
+## 🎨 Styling
+
+- **Tailwind CSS 4**: Utility-first CSS framework
+- **CSS Variables**: Dynamic theming support
+- **Responsive Design**: Mobile-first approach
+- **Dark Mode**: System preference detection with manual toggle
+
+## 📱 Features in Detail
+
+### Character Management
+
+- Browse characters with pagination or infinite scroll
+- Filter by name (with debounced search)
+- Filter by status (Alive, Dead, Unknown)
+- Sort alphabetically (A-Z, Z-A)
+
+### View Modes
+
+- **Grid View**: Card-based layout with character images
+- **Table View**: Compact table with sortable columns
+
+### Favorites System
+
+- Add/remove individual characters
+- Bulk add selected characters
+- Persistent storage using localStorage
+- Dedicated favorites page
+
+### Responsive Design
+
+- Mobile-optimized navigation with hamburger menu
+- Adaptive layouts for different screen sizes
+- Touch-friendly interactions
