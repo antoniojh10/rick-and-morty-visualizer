@@ -1,6 +1,13 @@
+import axios, { AxiosError } from 'axios';
 import type { CharactersResponse, Character, Status } from "@/types/character";
 
 const BASE_URL = "https://rickandmortyapi.com/api";
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+});
 
 export interface FetchCharactersParams {
   page?: number;
@@ -9,24 +16,41 @@ export interface FetchCharactersParams {
 }
 
 export async function fetchCharacters(params: FetchCharactersParams = {}): Promise<CharactersResponse> {
-  const url = new URL(`${BASE_URL}/character`);
-  if (params.page) url.searchParams.set("page", String(params.page));
-  if (params.name && params.name.trim().length >= 2) url.searchParams.set("name", params.name.trim());
-  if (params.status) url.searchParams.set("status", params.status);
+  try {
+    const searchParams: Record<string, string> = {};
+    
+    if (params.page) searchParams.page = String(params.page);
+    if (params.name && params.name.trim().length >= 2) searchParams.name = params.name.trim();
+    if (params.status) searchParams.status = params.status;
 
-  const res = await fetch(url.toString(), { cache: "no-store" });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Failed to fetch characters: ${res.status} ${text}`);
+    const response = await api.get<CharactersResponse>('/character', {
+      params: searchParams,
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // The API returns 404 with { error: "There is nothing here" } when no results match
+      if (error.response?.status === 404) {
+        return {
+          info: { count: 0, pages: 0, next: null, prev: null },
+          results: [],
+        };
+      }
+      throw new Error(`Failed to fetch characters: ${error.response?.status} ${error.message}`);
+    }
+    throw new Error('Failed to fetch characters: Unknown error');
   }
-  return res.json();
 }
 
 export async function fetchCharacter(id: number | string): Promise<Character> {
-  const res = await fetch(`${BASE_URL}/character/${id}`, { cache: "no-store" });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Failed to fetch character ${id}: ${res.status} ${text}`);
+  try {
+    const response = await api.get<Character>(`/character/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(`Failed to fetch character ${id}: ${error.response?.status} ${error.message}`);
+    }
+    throw new Error(`Failed to fetch character ${id}: Unknown error`);
   }
-  return res.json();
 }

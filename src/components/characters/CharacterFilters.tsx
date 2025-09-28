@@ -1,77 +1,152 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
-import type { Status } from "@/types/character";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { Search, Filter, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
+import { characterFiltersFormSchema, type CharacterFilters, type CharacterFiltersForm, statuses, sortOrders } from "@/schemas/characterFilters";
 
-export type SortOrder = "az" | "za";
-
-export interface FiltersState {
-  name: string;
-  status: Status | "";
-  sort: SortOrder;
+interface CharacterFiltersProps {
+  value?: Partial<CharacterFilters>;
+  onChange: (filters: CharacterFilters) => void;
 }
 
-export default function CharacterFilters({
-  value,
-  onChange,
-}: {
-  value: FiltersState;
-  onChange: (next: FiltersState) => void;
-}) {
-  const [name, setName] = useState(value.name);
-  const [status, setStatus] = useState<Status | "">(value.status);
-  const [sort, setSort] = useState<SortOrder>(value.sort);
+export default function CharacterFilters({ value = {}, onChange }: CharacterFiltersProps) {
+  const { control, watch, getValues } = useForm<CharacterFiltersForm>({
+    defaultValues: {
+      name: "",
+      status: "",
+      sort: "none",
+      ...value,
+    },
+    resolver: zodResolver(characterFiltersFormSchema),
+    mode: "onChange",
+  });
 
-  const debouncedName = useDebounce(name, 300);
-
+  // Track the latest onChange in a ref to avoid unnecessary effect re-runs
+  const onChangeRef = useRef(onChange);
   useEffect(() => {
-    onChange({ name: debouncedName, status, sort });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedName, status, sort]);
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
-  // Update local inputs if parent changes (e.g., reset)
+  // Watch for form changes and submit them directly
+  // The parent component will handle debouncing and validation
   useEffect(() => {
-    setName(value.name);
-    setStatus(value.status);
-    setSort(value.sort);
-  }, [value.name, value.status, value.sort]);
+    const subscription = watch((values) => {
+      onChangeRef.current({
+        name: values.name ?? "",
+        status: values.status ?? "",
+        sort: values.sort ?? "none"
+      });
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  // Handle form submission
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const values = getValues();
+    
+    // Always submit the form, let the parent handle validation
+    onChange({
+      name: values.name ?? "",
+      status: values.status ?? "",
+      sort: values.sort ?? "none"
+    });
+  };
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-4">
-      <div className="flex-1">
-        <label className="block text-sm mb-1">Search (min 2 chars)</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Search by name"
-          className="w-full rounded border px-3 py-2 bg-transparent"
-        />
+    <form onSubmit={handleFormSubmit} className="w-full">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+        <div className="flex-1">
+        <label htmlFor="name" className="block text-sm font-medium mb-1">
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-foreground/50" />
+          </div>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                id="name"
+                type="text"
+                placeholder="Search by name..."
+                className="pl-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-foreground/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+              />
+            )}
+          />
+        </div>
       </div>
+
       <div>
-        <label className="block text-sm mb-1">Status</label>
-        <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value as Status | "")}
-          className="rounded border px-3 py-2 bg-transparent"
-        >
-          <option value="">All</option>
-          <option value="Alive">Alive</option>
-          <option value="Dead">Dead</option>
-          <option value="unknown">Unknown</option>
-        </select>
+        <label htmlFor="status" className="block text-sm font-medium mb-1">
+          Status
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Filter className="h-4 w-4 text-foreground/50" />
+          </div>
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                id="status"
+                className="pl-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+              >
+                <option value="">All Status</option>
+                {statuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+        </div>
       </div>
+
       <div>
-        <label className="block text-sm mb-1">Sort</label>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as SortOrder)}
-          className="rounded border px-3 py-2 bg-transparent"
-        >
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
+        <label htmlFor="sort" className="block text-sm font-medium mb-1">
+          Sort
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            {watch('sort') === 'az' ? (
+              <ArrowUpAZ className="h-4 w-4 text-foreground/50" />
+            ) : watch('sort') === 'za' ? (
+              <ArrowDownAZ className="h-4 w-4 text-foreground/50" />
+            ) : (
+              <Filter className="h-4 w-4 text-foreground/50" />
+            )}
+          </div>
+          <Controller
+            name="sort"
+            control={control}
+            render={({ field }) => (
+              <select
+                {...field}
+                id="sort"
+                className="pl-10 w-full rounded-md border border-foreground/20 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+              >
+                {sortOrders.map((order) => (
+                  <option key={order} value={order}>
+                    {order === 'az' ? 'A to Z' : order === 'za' ? 'Z to A' : 'No sorting'}
+                  </option>
+                ))}
+              </select>
+            )}
+          />
+        </div>
       </div>
     </div>
+    </form>
   );
 }

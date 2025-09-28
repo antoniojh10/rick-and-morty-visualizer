@@ -1,0 +1,33 @@
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --accent: #16a34a; /* light: green-600 */
+  --accent-foreground: #ffffff;
+  /* You can extend with semantic tokens if needed */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Ensure overrides apply directly on the root element when the html has the 'dark' class */
+html.dark,
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --accent: #22c55e; /* dark: green-500 for better contrast on dark */
+  --accent-foreground: #0a0a0a;
+}
+
+/* Ensure light values when not in dark mode, to override any UA styles */
+html:not(.dark) {
+  --background: #ffffff;
+  --foreground: #171717;
+  --accent: #16a34a;
+  --accent-foreground: #ffffff;
+}

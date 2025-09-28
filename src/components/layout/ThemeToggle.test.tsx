@@ -20,17 +20,20 @@ describe("ThemeToggle", () => {
   it("shows Light initially and toggles to Dark, updating html class and title", async () => {
     render(<Wrapped />);
 
-    const btn = await screen.findByRole("button", { name: /Light/i });
+    // Accessible name comes from aria-label, not inner text
+    const btn = await screen.findByRole("button", { name: /Toggle theme/i });
     expect(btn).toBeInTheDocument();
+    expect(btn).toHaveTextContent(/Light/i);
     expect(btn).toHaveAttribute("title", expect.stringMatching(/Switch to dark/i));
     expect(document.documentElement.classList.contains("dark")).toBe(false);
 
     fireEvent.click(btn);
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Dark/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Toggle theme/i })).toBeInTheDocument();
     });
-    const btnDark = screen.getByRole("button", { name: /Dark/i });
+    const btnDark = screen.getByRole("button", { name: /Toggle theme/i });
+    expect(btnDark).toHaveTextContent(/Dark/i);
     expect(btnDark).toHaveAttribute("title", expect.stringMatching(/Switch to light/i));
     expect(document.documentElement.classList.contains("dark")).toBe(true);
   });

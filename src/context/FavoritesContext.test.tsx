@@ -1,6 +1,31 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, renderHook, act } from "@testing-library/react";
 import React from "react";
 import { FavoritesProvider, useFavorites } from "@/context/FavoritesContext";
+import '@testing-library/jest-dom';
+
+// Mock the localStorage
+const localStorageMock = (function() {
+  let store: Record<string, string> = {};
+  return {
+    getItem: function(key: string) {
+      return store[key] || null;
+    },
+    setItem: function(key: string, value: string) {
+      store[key] = value.toString();
+    },
+    clear: function() {
+      store = {};
+    },
+    removeItem: function(key: string) {
+      delete store[key];
+    }
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+  writable: true
+});
 
 function Consumer() {
   const { favorites, isFavorite, add, addMany, remove, clear } = useFavorites();
