@@ -6,6 +6,7 @@ import CharacterTable from '@/components/characters/CharacterTable';
 import CharacterFilters from '@/components/characters/CharacterFilters';
 import PaginationControls from '@/components/characters/PaginationControls';
 import ViewToggle from '@/components/layout/ViewToggle';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import type { CharacterFilters as CharacterFiltersType } from '@/schemas/characterFilters';
 import { useCharacterData } from '@/hooks/useCharacterData';
 import { usePagination } from '@/hooks/usePagination';
@@ -136,6 +137,9 @@ export default function Home() {
         onToggleInfinite={setInfinite}
         className="mt-6"
       />
+
+      {/* Scroll to top button - only show in infinite mode */}
+      <ScrollToTop showInInfiniteMode={infinite} />
     </div>
   );
 }
