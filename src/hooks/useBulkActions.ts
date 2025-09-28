@@ -22,17 +22,17 @@ export function useBulkActions({ characters }: UseBulkActionsProps): UseBulkActi
 
   const handleAddToFavorites = useCallback(() => {
     const selectedChars = characters.filter(char => selected[char.id]);
-    
+
     if (selectedChars.length === 0) {
       addToast({ type: 'info', message: 'No characters selected' });
       return;
     }
-    
+
     addMany(selectedChars);
     clearSelection();
-    addToast({ 
-      type: 'success', 
-      message: `Added ${selectedChars.length} character${selectedChars.length > 1 ? 's' : ''} to favorites` 
+    addToast({
+      type: 'success',
+      message: `Added ${selectedChars.length} character${selectedChars.length > 1 ? 's' : ''} to favorites`,
     });
   }, [characters, selected, addMany, clearSelection, addToast]);
 

@@ -15,15 +15,14 @@ interface PaginationControlsProps {
 export function PaginationControls({
   page,
   pages,
-  pageSize,
+  pageSize, // eslint-disable-line @typescript-eslint/no-unused-vars
   infinite,
   loading,
   onPageChange,
-  onPageSizeChange,
-  onToggleInfinite,
-  className = ''
+  onPageSizeChange, // eslint-disable-line @typescript-eslint/no-unused-vars
+  onToggleInfinite, // eslint-disable-line @typescript-eslint/no-unused-vars
+  className = '',
 }: PaginationControlsProps) {
-
   return (
     <div className={`flex justify-center ${className}`}>
       {!infinite && pages > 1 && (
@@ -36,11 +35,11 @@ export function PaginationControls({
           >
             Previous
           </button>
-          
+
           <span className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400">
             Page {page} of {pages}
           </span>
-          
+
           <button
             onClick={() => onPageChange(Math.min(pages, page + 1))}
             disabled={page >= pages || loading}

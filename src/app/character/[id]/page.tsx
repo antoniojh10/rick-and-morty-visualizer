@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { ArrowLeft, Heart, MapPin, User, Calendar } from 'lucide-react';
 import { fetchCharacter } from '@/services/api';
 import type { Character } from '@/types/character';
@@ -14,25 +15,25 @@ export default function CharacterDetailPage() {
   const [character, setCharacter] = useState<Character | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const { favorites, add, remove } = useFavorites();
   const { addToast } = useNotify();
-  
+
   const characterId = params.id as string;
   const isFavorite = character ? favorites[character.id] : false;
 
   useEffect(() => {
     const loadCharacter = async () => {
       if (!characterId) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
         const data = await fetchCharacter(characterId);
         setCharacter(data);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load character');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load character');
       } finally {
         setLoading(false);
       }
@@ -43,7 +44,7 @@ export default function CharacterDetailPage() {
 
   const handleToggleFavorite = () => {
     if (!character) return;
-    
+
     if (isFavorite) {
       remove(character.id);
       addToast({ type: 'success', message: `Removed ${character.name} from favorites` });
@@ -111,19 +112,19 @@ export default function CharacterDetailPage() {
         <div className="md:flex">
           {/* Image */}
           <div className="md:w-1/3">
-            <img
+            <Image
               src={character.image}
               alt={character.name}
+              width={300}
+              height={300}
               className="w-full h-64 md:h-full object-cover"
             />
           </div>
-          
+
           {/* Content */}
           <div className="md:w-2/3 p-6">
             <div className="flex items-start justify-between mb-4">
-              <h2 className="text-3xl font-bold text-foreground">
-                {character.name}
-              </h2>
+              <h2 className="text-3xl font-bold text-foreground">{character.name}</h2>
               <button
                 onClick={handleToggleFavorite}
                 className={`p-2 rounded-full transition-colors ${
@@ -141,11 +142,15 @@ export default function CharacterDetailPage() {
               {/* Status */}
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${
-                    character.status === 'Alive' ? 'bg-green-500' :
-                    character.status === 'Dead' ? 'bg-red-500' :
-                    'bg-gray-500'
-                  }`}></div>
+                  <div
+                    className={`w-3 h-3 rounded-full ${
+                      character.status === 'Alive'
+                        ? 'bg-green-500'
+                        : character.status === 'Dead'
+                          ? 'bg-red-500'
+                          : 'bg-gray-500'
+                    }`}
+                  ></div>
                   <span className="text-lg font-medium">{character.status}</span>
                 </div>
               </div>
@@ -153,7 +158,9 @@ export default function CharacterDetailPage() {
               {/* Species and Gender */}
               <div className="flex items-center gap-2 text-foreground/80">
                 <User className="w-5 h-5" />
-                <span>{character.species} • {character.gender}</span>
+                <span>
+                  {character.species} • {character.gender}
+                </span>
               </div>
 
               {/* Origin */}
@@ -187,7 +194,8 @@ export default function CharacterDetailPage() {
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-foreground">Episodes</h3>
                 <p className="text-foreground/80">
-                  Appeared in {character.episode.length} episode{character.episode.length !== 1 ? 's' : ''}
+                  Appeared in {character.episode.length} episode
+                  {character.episode.length !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>

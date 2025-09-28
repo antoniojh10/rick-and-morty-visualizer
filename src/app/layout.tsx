@@ -1,28 +1,29 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { NotificationProvider } from "@/context/NotificationContext";
-import Header from "@/components/layout/Header";
-import { FavoritesProvider } from "@/context/FavoritesContext";
-import Sidebar from "@/components/layout/Sidebar";
-import ThemeColorUpdater from "@/components/layout/ThemeColorUpdater";
-import { SelectionProvider } from "@/context/SelectionContext";
-import { ViewProvider } from "@/context/ViewContext";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { NotificationProvider } from '@/context/NotificationContext';
+import Header from '@/components/layout/Header';
+import { FavoritesProvider } from '@/context/FavoritesContext';
+import Sidebar from '@/components/layout/Sidebar';
+import ThemeColorUpdater from '@/components/layout/ThemeColorUpdater';
+import { SelectionProvider } from '@/context/SelectionContext';
+import { ViewProvider } from '@/context/ViewContext';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Rick and Morty Visualizer",
-  description: "Explore characters from the Rick and Morty universe with advanced filtering, sorting, and detailed views",
+  title: 'Rick and Morty Visualizer',
+  description:
+    'Explore characters from the Rick and Morty universe with advanced filtering, sorting, and detailed views',
 };
 
 export default function RootLayout({
@@ -40,7 +41,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}>
+      <body
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
+      >
         <ThemeProvider>
           <NotificationProvider>
             <FavoritesProvider>
@@ -51,9 +55,7 @@ export default function RootLayout({
                   <div className="mx-auto max-w-7xl px-4 py-6">
                     <div className="flex gap-6">
                       <Sidebar />
-                      <main className="flex-1 min-w-0">
-                        {children}
-                      </main>
+                      <main className="flex-1 min-w-0">{children}</main>
                     </div>
                   </div>
                 </ViewProvider>

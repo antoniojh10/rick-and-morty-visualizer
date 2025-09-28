@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import type { Character } from "@/types/character";
-import CharacterCard from "./CharacterCard";
+import type { Character } from '@/types/character';
+import CharacterCard from './CharacterCard';
 
 export default function CharacterGrid({
   items,
@@ -19,7 +19,9 @@ export default function CharacterGrid({
       <div className="text-center py-10">
         <p className="mb-3">{error}</p>
         {onRetry && (
-          <button className="rounded border px-3 py-1 text-sm" onClick={onRetry}>Retry</button>
+          <button className="rounded border px-3 py-1 text-sm" onClick={onRetry}>
+            Retry
+          </button>
         )}
       </div>
     );
@@ -41,7 +43,7 @@ export default function CharacterGrid({
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {items.map((c) => (
+      {items.map(c => (
         <CharacterCard key={c.id} c={c} />
       ))}
     </div>

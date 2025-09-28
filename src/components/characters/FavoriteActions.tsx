@@ -17,7 +17,7 @@ export function FavoriteActions({ selected, items, onClearSelection }: FavoriteA
 
   const handleAddToFavorites = () => {
     const selectedIds = Object.entries(selected)
-      .filter(([_, isSelected]) => isSelected)
+      .filter(([, isSelected]) => isSelected)
       .map(([id]) => Number(id));
 
     if (selectedIds.length === 0) {
@@ -26,18 +26,20 @@ export function FavoriteActions({ selected, items, onClearSelection }: FavoriteA
     }
 
     const selectedCharacters = items.filter(c => selectedIds.includes(c.id));
-    addMany(selectedCharacters.map(c => ({
-      id: c.id,
-      name: c.name,
-      image: c.image
-    })));
-    
+    addMany(
+      selectedCharacters.map(c => ({
+        id: c.id,
+        name: c.name,
+        image: c.image,
+      }))
+    );
+
     clearSelection();
     onClearSelection();
-    
-    addToast({ 
-      type: 'success', 
-      message: `Added ${selectedCharacters.length} character(s) to favorites` 
+
+    addToast({
+      type: 'success',
+      message: `Added ${selectedCharacters.length} character(s) to favorites`,
     });
   };
 
@@ -49,7 +51,7 @@ export function FavoriteActions({ selected, items, onClearSelection }: FavoriteA
       >
         Add Selected to Favorites
       </button>
-      <button 
+      <button
         className="px-3 py-1 border rounded text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
         onClick={() => {
           clearSelection();

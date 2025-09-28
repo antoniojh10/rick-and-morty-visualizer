@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 interface SelectionContextValue {
   selected: Record<number, boolean>;
@@ -20,14 +20,14 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
   const isSelected = useCallback((id: number) => !!selected[id], [selected]);
 
   const toggle = useCallback((id: number) => {
-    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
+    setSelected(prev => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
   const toggleAll = useCallback((ids: number[]) => {
-    setSelected((prev) => {
+    setSelected(prev => {
       const allSelected = ids.every(id => prev[id]);
       const next = { ...prev } as Record<number, boolean>;
-      
+
       if (allSelected) {
         // If all are selected, deselect all
         for (const id of ids) delete next[id];
@@ -35,13 +35,13 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
         // If not all are selected, select all
         for (const id of ids) next[id] = true;
       }
-      
+
       return next;
     });
   }, []);
 
   const selectMany = useCallback((ids: number[]) => {
-    setSelected((prev) => {
+    setSelected(prev => {
       const next = { ...prev } as Record<number, boolean>;
       for (const id of ids) next[id] = true;
       return next;
@@ -49,7 +49,7 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const deselectMany = useCallback((ids: number[]) => {
-    setSelected((prev) => {
+    setSelected(prev => {
       const next = { ...prev } as Record<number, boolean>;
       for (const id of ids) delete next[id];
       return next;
@@ -68,6 +68,6 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 
 export function useSelection() {
   const ctx = useContext(SelectionContext);
-  if (!ctx) throw new Error("useSelection must be used within SelectionProvider");
+  if (!ctx) throw new Error('useSelection must be used within SelectionProvider');
   return ctx;
 }

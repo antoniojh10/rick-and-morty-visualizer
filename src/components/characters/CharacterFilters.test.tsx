@@ -1,13 +1,11 @@
-import { render, screen, fireEvent, waitFor, cleanup, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import CharacterFilters from "./CharacterFilters";
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import CharacterFilters from './CharacterFilters';
 
-// Increase timeout for tests
-const TEST_TIMEOUT = 10000; // 10 seconds
-
+// Mock onChange function
 const mockOnChange = vi.fn();
 
-describe("CharacterFilters", () => {
+describe('CharacterFilters', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     mockOnChange.mockClear();
@@ -18,114 +16,112 @@ describe("CharacterFilters", () => {
     cleanup();
   });
 
-
-  it("should call onChange immediately when input changes", () => {
+  it('should call onChange immediately when input changes', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "a" } });
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'a' } });
+
     expect(mockOnChange).toHaveBeenCalledWith({
-      name: "a",
-      status: "",
-      sort: "none"
+      name: 'a',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should call onChange immediately with 2 characters", () => {
+  it('should call onChange immediately with 2 characters', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "ri" } });
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'ri' } });
+
     expect(mockOnChange).toHaveBeenCalledWith({
-      name: "ri",
-      status: "",
-      sort: "none"
+      name: 'ri',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should call onChange immediately with 3 characters", () => {
+  it('should call onChange immediately with 3 characters', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "ric" } });
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'ric' } });
+
     expect(mockOnChange).toHaveBeenCalledWith({
-      name: "ric",
-      status: "",
-      sort: "none"
+      name: 'ric',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should call onChange immediately with 4 characters", () => {
+  it('should call onChange immediately with 4 characters', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "rick" } });
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'rick' } });
+
     expect(mockOnChange).toHaveBeenCalledWith({
-      name: "rick",
-      status: "",
-      sort: "none"
+      name: 'rick',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should call onChange immediately with 5 characters", () => {
+  it('should call onChange immediately with 5 characters', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "ricks" } });
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'ricks' } });
+
     expect(mockOnChange).toHaveBeenCalledWith({
-      name: "ricks",
-      status: "",
-      sort: "none"
+      name: 'ricks',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should call onChange for each rapid change", () => {
+  it('should call onChange for each rapid change', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
-    const input = screen.getByPlaceholderText("Search by name...");
-    
+
+    const input = screen.getByPlaceholderText('Search by name...');
+
     // Simulate rapid typing - each change should trigger onChange immediately
-    fireEvent.change(input, { target: { value: "r" } });
-    fireEvent.change(input, { target: { value: "ri" } });
-    fireEvent.change(input, { target: { value: "ric" } });
-    fireEvent.change(input, { target: { value: "rick" } });
-    
+    fireEvent.change(input, { target: { value: 'r' } });
+    fireEvent.change(input, { target: { value: 'ri' } });
+    fireEvent.change(input, { target: { value: 'ric' } });
+    fireEvent.change(input, { target: { value: 'rick' } });
+
     // Should have been called 4 times (once for each change)
     expect(mockOnChange).toHaveBeenCalledTimes(4);
     expect(mockOnChange).toHaveBeenLastCalledWith({
-      name: "rick",
-      status: "",
-      sort: "none"
+      name: 'rick',
+      status: '',
+      sort: 'none',
     });
   });
 
-  it("should include status and sort in the onChange call", () => {
+  it('should include status and sort in the onChange call', () => {
     render(<CharacterFilters onChange={mockOnChange} />);
-    
+
     // Set status
-    const statusSelect = screen.getByLabelText("Status");
-    fireEvent.change(statusSelect, { target: { value: "Alive" } });
-    
+    const statusSelect = screen.getByLabelText('Status');
+    fireEvent.change(statusSelect, { target: { value: 'Alive' } });
+
     // Set sort
-    const sortSelect = screen.getByLabelText("Sort");
-    fireEvent.change(sortSelect, { target: { value: "az" } });
-    
+    const sortSelect = screen.getByLabelText('Sort');
+    fireEvent.change(sortSelect, { target: { value: 'az' } });
+
     // Type in search
-    const input = screen.getByPlaceholderText("Search by name...");
-    fireEvent.change(input, { target: { value: "morty" } });
-    
+    const input = screen.getByPlaceholderText('Search by name...');
+    fireEvent.change(input, { target: { value: 'morty' } });
+
     // Should have been called 4 times (initial render + 3 field changes)
     expect(mockOnChange).toHaveBeenCalledTimes(4);
     expect(mockOnChange).toHaveBeenLastCalledWith({
-      name: "morty",
-      status: "Alive",
-      sort: "az"
+      name: 'morty',
+      status: 'Alive',
+      sort: 'az',
     });
   });
 });
-

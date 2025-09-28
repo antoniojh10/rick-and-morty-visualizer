@@ -20,7 +20,6 @@ if (!('crypto' in globalThis)) {
   // @ts-expect-error - define crypto if missing
   globalThis.crypto = {};
 }
-// @ts-expect-error - polyfill
 if (!globalThis.crypto.randomUUID) {
   // @ts-expect-error - polyfill
   globalThis.crypto.randomUUID = () => 'test-uuid-' + Math.random().toString(16).slice(2);

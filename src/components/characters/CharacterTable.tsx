@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import type { Character } from '@/types/character';
 import { useSelection } from '@/context/SelectionContext';
@@ -63,9 +64,8 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
     setSortConfig(prev => {
       if (prev.field === field) {
         // Cycle through: null -> asc -> desc -> null
-        const newDirection: SortDirection = 
-          prev.direction === null ? 'asc' :
-          prev.direction === 'asc' ? 'desc' : null;
+        const newDirection: SortDirection =
+          prev.direction === null ? 'asc' : prev.direction === 'asc' ? 'desc' : null;
         return { field, direction: newDirection };
       }
       return { field, direction: 'asc' };
@@ -76,9 +76,11 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
     if (sortConfig.field !== field || sortConfig.direction === null) {
       return <ChevronsUpDown className="w-4 h-4 text-gray-400" />;
     }
-    return sortConfig.direction === 'asc' ? 
-      <ChevronUp className="w-4 h-4 text-blue-500" /> : 
-      <ChevronDown className="w-4 h-4 text-blue-500" />;
+    return sortConfig.direction === 'asc' ? (
+      <ChevronUp className="w-4 h-4 text-blue-500" />
+    ) : (
+      <ChevronDown className="w-4 h-4 text-blue-500" />
+    );
   };
 
   const allSelected = items.length > 0 && items.every(item => selected[item.id]);
@@ -120,7 +122,7 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
             <th className="border-r border-foreground/10 p-3 text-left w-20 text-foreground font-medium">
               Image
             </th>
-            <th 
+            <th
               className="border-r border-foreground/10 p-3 text-left cursor-pointer hover:bg-foreground/5 text-foreground font-medium"
               onClick={() => handleSort('name')}
             >
@@ -129,7 +131,7 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
                 {getSortIcon('name')}
               </div>
             </th>
-            <th 
+            <th
               className="border-r border-foreground/10 p-3 text-left cursor-pointer hover:bg-foreground/5 text-foreground font-medium"
               onClick={() => handleSort('status')}
             >
@@ -138,7 +140,7 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
                 {getSortIcon('status')}
               </div>
             </th>
-            <th 
+            <th
               className="border-r border-foreground/10 p-3 text-left cursor-pointer hover:bg-foreground/5 text-foreground font-medium"
               onClick={() => handleSort('species')}
             >
@@ -147,7 +149,7 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
                 {getSortIcon('species')}
               </div>
             </th>
-            <th 
+            <th
               className="p-3 text-left cursor-pointer hover:bg-foreground/5 text-foreground font-medium"
               onClick={() => handleSort('location')}
             >
@@ -161,7 +163,10 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
         <tbody>
           {loading ? (
             <tr>
-              <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-8 text-center">
+              <td
+                colSpan={6}
+                className="border border-gray-300 dark:border-gray-600 p-8 text-center"
+              >
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                   Loading characters...
@@ -170,20 +175,26 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
             </tr>
           ) : sortedItems.length === 0 ? (
             <tr>
-              <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-8 text-center text-gray-600 dark:text-gray-400">
+              <td
+                colSpan={6}
+                className="border border-gray-300 dark:border-gray-600 p-8 text-center text-gray-600 dark:text-gray-400"
+              >
                 No characters found
               </td>
             </tr>
           ) : (
-            sortedItems.map((character) => (
-              <tr 
-                key={character.id} 
+            sortedItems.map(character => (
+              <tr
+                key={character.id}
                 className={`hover:bg-foreground/5 cursor-pointer border-b border-foreground/10 ${
                   selected[character.id] ? 'bg-accent/10' : ''
                 }`}
                 onClick={() => router.push(`/character/${character.id}`)}
               >
-                <td className="border-r border-foreground/10 p-3" onClick={(e) => e.stopPropagation()}>
+                <td
+                  className="border-r border-foreground/10 p-3"
+                  onClick={e => e.stopPropagation()}
+                >
                   <input
                     type="checkbox"
                     checked={selected[character.id] || false}
@@ -193,31 +204,34 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
                   />
                 </td>
                 <td className="border-r border-foreground/10 p-3">
-                  <img
+                  <Image
                     src={character.image}
                     alt={character.name}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full object-cover"
-                    loading="lazy"
                   />
                 </td>
                 <td className="border-r border-foreground/10 p-3 font-medium text-foreground">
                   {character.name}
                 </td>
                 <td className="border-r border-foreground/10 p-3">
-                  <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                    character.status === 'Alive' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                    character.status === 'Dead' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
-                    'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-                  }`}>
+                  <span
+                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                      character.status === 'Alive'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : character.status === 'Dead'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                    }`}
+                  >
                     {character.status}
                   </span>
                 </td>
                 <td className="border-r border-foreground/10 p-3 text-foreground">
                   {character.species}
                 </td>
-                <td className="p-3 text-foreground">
-                  {character.location.name}
-                </td>
+                <td className="p-3 text-foreground">{character.location.name}</td>
               </tr>
             ))
           )}

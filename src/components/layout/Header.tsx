@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
-import { useState } from "react";
-import MobileMenu from "./MobileMenu";
+import Link from 'next/link';
+import ThemeToggle from './ThemeToggle';
+import { useState } from 'react';
+import MobileMenu from './MobileMenu';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,13 +22,15 @@ export default function Header() {
           >
             ☰
           </button>
-          <Link href="/" className="font-semibold">Rick & Morty Visualizer</Link>
+          <Link href="/" className="font-semibold">
+            Rick & Morty Visualizer
+          </Link>
         </div>
         <nav className="hidden md:flex items-center gap-4">
           <ThemeToggle />
         </nav>
       </div>
-      
+
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </header>
   );

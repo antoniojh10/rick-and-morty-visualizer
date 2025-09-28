@@ -1,51 +1,35 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect } from "react";
-import CharacterGrid from "@/components/characters/CharacterGrid";
-import CharacterTable from "@/components/characters/CharacterTable";
-import CharacterFilters from "@/components/characters/CharacterFilters";
-import PaginationControls from "@/components/characters/PaginationControls";
-import ViewToggle from "@/components/layout/ViewToggle";
-import type { CharacterFilters as CharacterFiltersType } from "@/schemas/characterFilters";
-import { useCharacterData } from "@/hooks/useCharacterData";
-import { usePagination } from "@/hooks/usePagination";
-import { useBulkActions } from "@/hooks/useBulkActions";
-import { useView } from "@/context/ViewContext";
+import { useState, useCallback, useEffect } from 'react';
+import CharacterGrid from '@/components/characters/CharacterGrid';
+import CharacterTable from '@/components/characters/CharacterTable';
+import CharacterFilters from '@/components/characters/CharacterFilters';
+import PaginationControls from '@/components/characters/PaginationControls';
+import ViewToggle from '@/components/layout/ViewToggle';
+import type { CharacterFilters as CharacterFiltersType } from '@/schemas/characterFilters';
+import { useCharacterData } from '@/hooks/useCharacterData';
+import { usePagination } from '@/hooks/usePagination';
+import { useBulkActions } from '@/hooks/useBulkActions';
+import { useView } from '@/context/ViewContext';
 
 // Constants
 const MIN_SEARCH_LENGTH = 2;
 
 export default function Home() {
   // State for filters with proper typing
-  const [filters, setFilters] = useState<CharacterFiltersType>({ 
-    name: "", 
-    status: "", 
-    sort: "none" 
+  const [filters, setFilters] = useState<CharacterFiltersType>({
+    name: '',
+    status: '',
+    sort: 'none',
   });
 
   // Pagination hook
-  const {
-    page,
-    pageSize,
-    infinite,
-    setPageSize,
-    setInfinite,
-    handlePageChange,
-    resetPage,
-  } = usePagination();
+  const { page, pageSize, infinite, setPageSize, setInfinite, handlePageChange, resetPage } =
+    usePagination();
 
   // Character data hook
-  const {
-    buffer,
-    displayItems,
-    loading,
-    error,
-    pages,
-    canSearch,
-    hasMore,
-    load,
-    loadMore,
-  } = useCharacterData({ filters, page, pageSize, infinite });
+  const { buffer, displayItems, loading, error, pages, canSearch, hasMore, load, loadMore } =
+    useCharacterData({ filters, page, pageSize, infinite });
 
   // Bulk actions hook
   const { selectedCount, handleAddToFavorites } = useBulkActions({ characters: buffer });
@@ -57,7 +41,7 @@ export default function Home() {
   const handleFilterChange = useCallback((newFilters: CharacterFiltersType) => {
     setFilters(prev => ({
       ...prev,
-      ...newFilters
+      ...newFilters,
     }));
   }, []);
 
@@ -80,35 +64,35 @@ export default function Home() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <ViewToggle />
-          
+
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium">Page size:</label>
               <select
                 className="rounded border px-2 py-1 bg-transparent min-w-[70px]"
                 value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
+                onChange={e => setPageSize(Number(e.target.value))}
                 disabled={infinite}
-                title={infinite ? "Disable infinite mode to change page size" : "Page size"}
+                title={infinite ? 'Disable infinite mode to change page size' : 'Page size'}
               >
                 <option value={10}>10</option>
                 <option value={20}>20</option>
                 <option value={50}>50</option>
               </select>
             </div>
-            
+
             <label className="inline-flex items-center gap-2">
-              <input 
-                type="checkbox" 
-                checked={infinite} 
-                onChange={(e) => setInfinite(e.target.checked)} 
+              <input
+                type="checkbox"
+                checked={infinite}
+                onChange={e => setInfinite(e.target.checked)}
                 className="rounded"
               />
               <span className="text-sm">Infinite scroll</span>
             </label>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <button
             onClick={handleAddToFavorites}
@@ -122,19 +106,9 @@ export default function Home() {
 
       {/* Character Display */}
       {viewMode === 'grid' ? (
-        <CharacterGrid 
-          items={displayItems} 
-          loading={loading} 
-          error={error}
-          onRetry={load}
-        />
+        <CharacterGrid items={displayItems} loading={loading} error={error} onRetry={load} />
       ) : (
-        <CharacterTable 
-          items={displayItems} 
-          loading={loading} 
-          error={error}
-          onRetry={load}
-        />
+        <CharacterTable items={displayItems} loading={loading} error={error} onRetry={load} />
       )}
 
       {/* Load More Button for Infinite Scroll */}
@@ -145,7 +119,7 @@ export default function Home() {
             disabled={loading}
             className="px-6 py-2 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {loading ? "Loading..." : "Load More"}
+            {loading ? 'Loading...' : 'Load More'}
           </button>
         </div>
       )}
@@ -157,7 +131,7 @@ export default function Home() {
         pageSize={pageSize}
         infinite={infinite}
         loading={loading}
-        onPageChange={(newPage) => handlePageChange(newPage, pages)}
+        onPageChange={newPage => handlePageChange(newPage, pages)}
         onPageSizeChange={setPageSize}
         onToggleInfinite={setInfinite}
         className="mt-6"

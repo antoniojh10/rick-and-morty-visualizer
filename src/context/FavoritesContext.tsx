@@ -1,8 +1,12 @@
-"use client";
+'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-export interface FavoriteItem { id: number; name: string; image: string }
+export interface FavoriteItem {
+  id: number;
+  name: string;
+  image: string;
+}
 
 interface FavoritesContextValue {
   favorites: Record<number, FavoriteItem>;
@@ -15,7 +19,7 @@ interface FavoritesContextValue {
 
 const FavoritesContext = createContext<FavoritesContextValue | undefined>(undefined);
 
-const STORAGE_KEY = "favorites:v1";
+const STORAGE_KEY = 'favorites:v1';
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<Record<number, FavoriteItem>>({});
@@ -36,11 +40,11 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const isFavorite = useCallback((id: number) => !!favorites[id], [favorites]);
 
   const add = useCallback((item: FavoriteItem) => {
-    setFavorites((prev) => ({ ...prev, [item.id]: item }));
+    setFavorites(prev => ({ ...prev, [item.id]: item }));
   }, []);
 
   const addMany = useCallback((items: FavoriteItem[]) => {
-    setFavorites((prev) => {
+    setFavorites(prev => {
       const next = { ...prev } as Record<number, FavoriteItem>;
       for (const it of items) next[it.id] = it;
       return next;
@@ -48,7 +52,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const remove = useCallback((id: number) => {
-    setFavorites((prev) => {
+    setFavorites(prev => {
       const next = { ...prev };
       delete next[id];
       return next;
@@ -57,13 +61,16 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
   const clear = useCallback(() => setFavorites({}), []);
 
-  const value = useMemo(() => ({ favorites, isFavorite, add, addMany, remove, clear }), [favorites, isFavorite, add, addMany, remove, clear]);
+  const value = useMemo(
+    () => ({ favorites, isFavorite, add, addMany, remove, clear }),
+    [favorites, isFavorite, add, addMany, remove, clear]
+  );
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;
 }
 
 export function useFavorites() {
   const ctx = useContext(FavoritesContext);
-  if (!ctx) throw new Error("useFavorites must be used within FavoritesProvider");
+  if (!ctx) throw new Error('useFavorites must be used within FavoritesProvider');
   return ctx;
 }

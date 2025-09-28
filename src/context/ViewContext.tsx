@@ -20,7 +20,7 @@ export function ViewProvider({ children }: ViewProviderProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   const toggleView = () => {
-    setViewMode(prev => prev === 'grid' ? 'table' : 'grid');
+    setViewMode(prev => (prev === 'grid' ? 'table' : 'grid'));
   };
 
   return (
