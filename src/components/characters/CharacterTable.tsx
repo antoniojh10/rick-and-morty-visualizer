@@ -219,7 +219,7 @@ export default function CharacterTable({ items, loading, error, onRetry }: Chara
                   <span
                     className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
                       character.status === 'Alive'
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        ? 'bg-accent/10 text-accent dark:bg-accent/20 dark:text-accent'
                         : character.status === 'Dead'
                           ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                           : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'

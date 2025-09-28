@@ -34,7 +34,7 @@ export default function FavoritesPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {items.map(it => (
             <div key={it.id} className="overflow-hidden rounded-lg border border-foreground/15">
-              <Link href={`/characters/${it.id}`} className="block">
+              <Link href={`/character/${it.id}`} className="block">
                 <div className="relative w-full aspect-[4/3]">
                   <Image
                     src={it.image}
@@ -47,7 +47,7 @@ export default function FavoritesPage() {
               </Link>
               <div className="p-3 flex items-center justify-between gap-2">
                 <Link
-                  href={`/characters/${it.id}`}
+                  href={`/character/${it.id}`}
                   className="font-semibold truncate"
                   title={it.name}
                 >

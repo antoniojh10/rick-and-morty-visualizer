@@ -7,6 +7,7 @@ import CharacterFilters from '@/components/characters/CharacterFilters';
 import PaginationControls from '@/components/characters/PaginationControls';
 import ViewToggle from '@/components/layout/ViewToggle';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
+import { SelectAllButton } from '@/components/characters/SelectAllButton';
 import type { CharacterFilters as CharacterFiltersType } from '@/schemas/characterFilters';
 import { useCharacterData } from '@/hooks/useCharacterData';
 import { usePagination } from '@/hooks/usePagination';
@@ -60,6 +61,9 @@ export default function Home() {
           Type at least {MIN_SEARCH_LENGTH} characters to search.
         </p>
       )}
+
+      {/* Bulk Selection */}
+      {displayItems.length > 0 && <SelectAllButton items={displayItems} />}
 
       {/* Toolbar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

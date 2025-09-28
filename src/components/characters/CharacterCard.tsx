@@ -36,7 +36,7 @@ export default function CharacterCard({ c }: { c: Character }) {
           <span
             className={`text-xs px-2 py-0.5 rounded-full border ${
               c.status === 'Alive'
-                ? 'border-green-600 text-green-600'
+                ? 'border-accent text-accent'
                 : c.status === 'Dead'
                   ? 'border-red-600 text-red-600'
                   : 'border-gray-500 text-gray-500'

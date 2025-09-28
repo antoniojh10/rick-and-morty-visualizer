@@ -1,7 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --accent: #16a34a; /* light: green-600 */
+  --accent: #f87318; /* vibrant orange */
   --accent-foreground: #ffffff;
   /* You can extend with semantic tokens if needed */
 }
@@ -20,7 +20,7 @@ html.dark,
 :root.dark {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --accent: #22c55e; /* dark: green-500 for better contrast on dark */
+  --accent: #fb923c; /* lighter orange for better contrast on dark */
   --accent-foreground: #0a0a0a;
 }
 
@@ -28,6 +28,6 @@ html.dark,
 html:not(.dark) {
   --background: #ffffff;
   --foreground: #171717;
-  --accent: #16a34a;
+  --accent: #f87318;
   --accent-foreground: #ffffff;
 }

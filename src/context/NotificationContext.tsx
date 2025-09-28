@@ -52,11 +52,7 @@ function ToastContainer({ toasts, onClose }: { toasts: Toast[]; onClose: (id: st
         <div
           key={t.id}
           className={`min-w-[260px] rounded-md px-4 py-3 shadow text-sm text-white ${
-            t.type === 'success'
-              ? 'bg-green-600'
-              : t.type === 'error'
-                ? 'bg-red-600'
-                : 'bg-gray-800'
+            t.type === 'success' ? 'bg-accent' : t.type === 'error' ? 'bg-red-600' : 'bg-gray-800'
           }`}
           role="status"
         >

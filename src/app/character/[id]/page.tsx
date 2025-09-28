@@ -145,7 +145,7 @@ export default function CharacterDetailPage() {
                   <div
                     className={`w-3 h-3 rounded-full ${
                       character.status === 'Alive'
-                        ? 'bg-green-500'
+                        ? 'bg-accent'
                         : character.status === 'Dead'
                           ? 'bg-red-500'
                           : 'bg-gray-500'
