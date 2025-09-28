@@ -102,7 +102,7 @@ export default function Home() {
           <button
             onClick={handleAddToFavorites}
             disabled={selectedCount === 0}
-            className="rounded border px-3 py-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            className="rounded border px-3 py-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent/10 transition-colors"
           >
             Add to Favorites ({selectedCount})
           </button>

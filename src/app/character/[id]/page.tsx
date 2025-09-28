@@ -99,7 +99,7 @@ export default function CharacterDetailPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="p-2 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          className="p-2 rounded-lg border hover:bg-accent/10 transition-colors"
           aria-label="Go back"
         >
           <ArrowLeft className="w-5 h-5" />
@@ -130,7 +130,7 @@ export default function CharacterDetailPage() {
                 className={`p-2 rounded-full transition-colors ${
                   isFavorite
                     ? 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-400'
-                    : 'bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    : 'bg-gray-100 text-gray-400 dark:bg-gray-700 dark:text-gray-500 hover:bg-accent/10'
                 }`}
                 aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -207,13 +207,13 @@ export default function CharacterDetailPage() {
       <div className="flex gap-4">
         <button
           onClick={() => router.push('/')}
-          className="px-6 py-2 border border-foreground/20 text-foreground rounded-lg hover:bg-foreground/5 transition-colors"
+          className="px-6 py-2 border border-foreground/20 text-foreground rounded-lg hover:bg-accent/10 transition-colors"
         >
           Back to Characters
         </button>
         <button
           onClick={handleToggleFavorite}
-          className="px-6 py-2 border border-foreground/20 text-foreground rounded-lg hover:bg-foreground/5 transition-colors"
+          className="px-6 py-2 border border-foreground/20 text-foreground rounded-lg hover:bg-accent/10 transition-colors"
         >
           {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
         </button>
