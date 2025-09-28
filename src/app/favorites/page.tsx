@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useNotify } from '@/context/NotificationContext';
 
@@ -34,8 +35,15 @@ export default function FavoritesPage() {
           {items.map(it => (
             <div key={it.id} className="overflow-hidden rounded-lg border border-foreground/15">
               <Link href={`/characters/${it.id}`} className="block">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={it.image} alt={it.name} className="w-full aspect-[4/3] object-cover" />
+                <div className="relative w-full aspect-[4/3]">
+                  <Image
+                    src={it.image}
+                    alt={it.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
               </Link>
               <div className="p-3 flex items-center justify-between gap-2">
                 <Link

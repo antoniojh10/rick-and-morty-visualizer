@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Character } from '@/types/character';
 import { useSelection } from '@/context/SelectionContext';
 import { useFavorites } from '@/context/FavoritesContext';
@@ -19,8 +20,13 @@ export default function CharacterCard({ c }: { c: Character }) {
       aria-selected={selected}
     >
       <div className="relative aspect-[4/3] bg-black/5 dark:bg-white/10">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={c.image} alt={c.name} className="h-full w-full object-cover" />
+        <Image
+          src={c.image}
+          alt={c.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
       </div>
       <div className="p-3 space-y-2">
         <div className="flex items-center justify-between gap-2">

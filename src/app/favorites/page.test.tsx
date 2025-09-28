@@ -20,7 +20,7 @@ const mockUseFavorites = vi.mocked(FavoritesContext.useFavorites);
 const mockFavorite: FavoriteItem = {
   id: 1,
   name: 'Rick Sanchez',
-  image: 'rick.png',
+  image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
 };
 
 describe('Favorites page', () => {
